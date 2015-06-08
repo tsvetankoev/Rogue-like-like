@@ -3,7 +3,7 @@ PythonRogue is a console roguelike game written in Python 3.4 for the purposes o
 
 ##Features
 * The game has infinite maps, each of which is randomly generated.
-* People die when they are killed. There are no saves.
+* People die if they are killed. There are no saves.
 * The game is played in console with text commands. No fancy UIs here.
 * Monsters will be randomly generated. *Hopefully* their stats will be optimized correctly to your own stats. Expect to die a lot.
 * Items will be randomly generated.
@@ -36,7 +36,7 @@ PythonRogue is a console roguelike game written in Python 3.4 for the purposes o
 * Entrances to previous dungeon and to next dungeon.
 
 ##Battle Plan
-1. Create Basic Classes and OOP.
+1. **Create Basic Classes and OOP.** (30%)
 2. Implement an algorithm for dungeon generation.
 3. Implement an algorithm for populating a dungeon.
 4. Add methods for traversing the dungeon.
