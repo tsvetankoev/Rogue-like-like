@@ -29,6 +29,12 @@ class Tile:
         if self._visible:
             return "."
 
+    def add_monster(self):
+        self._has_monster = True
+
+    def add_item(self):
+        self._has_item = True
+
     def is_visited(self):
         return self._is_visited
 
@@ -37,6 +43,9 @@ class Tile:
 
     def is_exit(self):
         return self._exit
+
+    def is_passable(self):
+        return self._passable
 
     def has_monster(self):
         return self._has_monster
