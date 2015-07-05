@@ -34,15 +34,3 @@ PythonRogue is a console roguelike game written in Python 3.4 for the purposes o
 * Player class has functions to traverse the map.
 * Map gets revealed as player traverses it.
 * Entrances to previous dungeon and to next dungeon.
-
-##Battle Plan
-1. **Create Basic Classes and OOP.** (30%)
-2. Implement an algorithm for dungeon generation.
-3. Implement an algorithm for populating a dungeon.
-4. Add methods for traversing the dungeon.
-5. Create methods for using the inventory and items.
-6. Create battle system. (*probably the random encounter system*).
-7. Create a *barely working* UI.
-8. Did I forget tests.
-9. ????
-10. PROFIT
