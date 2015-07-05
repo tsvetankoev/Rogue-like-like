@@ -70,7 +70,20 @@ class Game:
 
         # method for printing help
         def _help(self):
-            pass
+            print("Here is a list of command you can use:")
+            print("- go north          : Move your character one block north")
+            print("- go south          : Move your character one block south")
+            print("- go west           : Move your character one block west")
+            print("- go east           : Move your character one block east")
+            print("- inventory         : "
+                  "List the items you have in your inventory")
+            print("- equip <item-name> : Equip the item specified. "
+                  "If the item slot is taken "
+                  "the currently equiped item will be replaced.")
+            print("- use <item-name>   : Use the item specified. "
+                  "If you have reached you max stat, "
+                  "the item will be used anyway")
+            print("- help              : List the commands you can use")
 
         # method for equping items
         def _equip(self, itemname):
