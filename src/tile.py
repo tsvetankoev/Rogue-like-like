@@ -6,6 +6,10 @@ class Tile:
         self._entrance = False
         self._exit = False
         self._player = False
+        self._contents = None
+        self._has_item = False
+        self._has_monster = False
+        self._is_visited = False
 
     def make_passable(self):
         self._passable = True
@@ -24,3 +28,24 @@ class Tile:
             return "X"
         if self._visible:
             return "."
+
+    def is_visited(self):
+        return self._is_visited
+
+    def is_entrance(self):
+        return self._entrance
+
+    def is_exit(self):
+        return self._exit
+
+    def has_monster(self):
+        return self._has_monster
+
+    def has_item(self):
+        return self._has_item
+
+    def contents(self):
+        return self._contents
+
+    def remove_contents(self):
+        self._contents = None
