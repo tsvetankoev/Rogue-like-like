@@ -19,21 +19,21 @@ class Map:
         return x in range(0, self._width) and y in range(0, self._heigth)
 
     def _get_tile(self, x, y):
-        return self._map[x, y]
+        return self._map[y][x]
 
     def clear_current_field(self):
-        self.map[self._playerX, self._playerY].contents = None
+        self.map[self._playerY][self._playerX].contents = None
 
     def _see_neighbours(self):
         for x in range(self._playerX - 1, self._playerX + 2):
             for y in range(self._playerY - 1, self._playerY + 2):
                 if (self._valid_position(x, y)):
-                    self._map[x, y].seen()
+                    self._map[y][x].seen()
 
     def go_north(self):
         if (self._valid_position(self._playerX, self._playerY-1)):
             print("Can't go that way.")
-        elif (self._map[self._playerX, self._playerY-1].is_passable):
+        elif (self._map[self._playerY-1][self._playerX].is_passable):
             print("Can't go that way.")
         else:
             self._playerY = self._playerY - 1
@@ -42,7 +42,7 @@ class Map:
     def go_south(self):
         if (self._valid_position(self._playerX, self._playerY+1)):
             print("Can't go that way.")
-        elif (self._map[self._playerX, self._playerY+1].is_passable):
+        elif (self._map[self._playerY+1][self._playerX].is_passable):
             print("Can't go that way.")
         else:
             self._playerY = self._playerY + 1
@@ -51,14 +51,23 @@ class Map:
     def go_west(self):
         if (self._valid_position(self._playerX-1, self._playerY)):
             print("Can't go that way.")
-        elif (self._map[self._playerX-1, self._playerY].is_passable):
+        elif (self._map[self._playerY][self._playerX-1].is_passable):
             print("Can't go that way.")
         else:
             self._playerX = self._playerX - 1
             self._see_neighbours()
 
+    def go_east(self):
+        if (self._valid_position(self._playerX+1, self._playerY)):
+            print("Can't go that way.")
+        elif (self._map[self._playerY][self._playerX+1].is_passable):
+            print("Can't go that way.")
+        else:
+            self._playerX = self._playerX + 1
+            self._see_neighbours()
+
     def draw_map(self):
         for row in self._map:
             for cell in row:
-                print(cell.draw(), "")
+                print(cell.draw() + "")
             print

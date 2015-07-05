@@ -1,5 +1,7 @@
 import Map
 import Player
+import Battle
+import MonsterGenerator
 
 
 class Game:
@@ -47,8 +49,10 @@ class Game:
                 print("Item found: " + contents.name())
                 self._player.add_to_inventory(contents)
             elif (player_tile.has_monster() and not player_tile.is_visited()):
-                #TODO: add code for battle
-                pass
+                monster = MonsterGenerator.generate(self._currentlevel, self._player.level())
+                battle = Battle(self._player, monster)
+                self._player = battle.start()
+
 
         # method for using items
         def _use_item(self, itemname):
