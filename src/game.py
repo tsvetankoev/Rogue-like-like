@@ -49,10 +49,10 @@ class Game:
                 print("Item found: " + contents.name())
                 self._player.add_to_inventory(contents)
             elif (player_tile.has_monster() and not player_tile.is_visited()):
-                monster = MonsterGenerator.generate(self._currentlevel, self._player.level())
+                monster = MonsterGenerator.generate(self._currentlevel,
+                                                    self._player.level())
                 battle = Battle(self._player, monster)
                 self._player = battle.start()
-
 
         # method for using items
         def _use_item(self, itemname):
@@ -65,8 +65,7 @@ class Game:
 
         # method for listing inventory
         def _print_inventory(self):
-            for item in self._player.inventory:
-                print(item.name())
+            self._player.print_inventory()
 
         # method for printing help
         def _help(self):

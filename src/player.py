@@ -1,5 +1,6 @@
 import creature
 
+
 class Player(Creature):
 
     def __init__(self, name):
@@ -18,7 +19,8 @@ class Player(Creature):
 
     def level_up(self):
         self._level = self._level + 1
-        stat = input("Choose stat to level up (Strength, Inteligence or Dexterity):").lower()
+        stat = input("Choose stat to level up (Strength, "
+                     "Inteligence or Dexterity):").lower()
         leveled = False
         while(not leveled):
             if (stat == "strength"):
@@ -33,12 +35,11 @@ class Player(Creature):
             else:
                 stat = input("Input is wrong. Please try again").lower()
 
-    def list_inventory(self):
-        for item in self._inventory:
-            print(item.get_name())
-
     def health(self):
         return self._health
 
     def level(self):
         return self._level
+
+    def set_name(self, name):
+        self._name = name
