@@ -44,12 +44,23 @@ class MapGenerator:
         for y in range(min(start, end), max(start, end) + 1):
             self._dungeon[y][x].make_passable()
 
+    def _random_tile(self):
+        x = random.randrange(0, self._width)
+        y = random.randrange(0, self._height)
+        return (x, y)
+
     def generate(self):
         self._dungeon = [[Tile() for x in range(self._width)]
                           for y in range(self._height)]
 
+
         number_of_rooms = random.randrange(4, 8)
         rooms = []
+
+        entrance_x = None
+        entrance_y = None
+        exit_x = None
+        exit_y = None
 
         while len(rooms) <= number_of_rooms:
             width = random.randrange(5, 10)
@@ -74,9 +85,15 @@ class MapGenerator:
                         self.create_horizontal_tunnel(old_x, new_x, new_y)
                 rooms.append(newroom)
                 self.create_room(newroom)
+                if len(rooms) == 1:
+                    (entrance_x, entrance_y) = newroom.random_tile()
+                    self._dungeon[entrance_y][entrance_x].add_entrance()
+                elif len(rooms) == number_of_rooms:
+                    (exit_x, exit_y) = newroom.random_tile()
+                    self._dungeon[exit_y][exit_x].add_exit()
 
         self._populate(self._dungeon)
-        return self._dungeon
+        return (self._dungeon, entrance_x, entrance_y, exit_x, exit_y)
 
     def create_room(self, room):
         for x in range(room.top_left_X + 1, room.bottom_right_X):

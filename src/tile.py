@@ -18,15 +18,19 @@ class Tile:
         self._visible = True
 
     def draw(self):
+        if not self._visible:
+            return " "
+        if self._entrance:
+            return "X"
         if not self._passable:
             return "#"
         if self._player:
             return "@"
-        if not self._visible:
-            return " "
-        if self._entrance or self._exit:
+        if self._exit:
             return "X"
-        if self._visible:
+        if self._entrance:
+            return "E"
+        else:
             return "."
 
     def add_monster(self):
@@ -34,6 +38,18 @@ class Tile:
 
     def add_item(self):
         self._has_item = True
+
+    def add_entrance(self):
+        self._entrance = True
+
+    def add_exit(self):
+        self._exit = True
+
+    def add_player(self):
+        self._player = True
+
+    def remove_player(self):
+        self._player = False
 
     def is_visited(self):
         return self._is_visited
