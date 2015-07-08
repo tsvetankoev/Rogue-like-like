@@ -8,11 +8,14 @@ class Game:
 
     def __init__(self):
         self._maps = []
-        self._player = Player()
+        self._player = Player("")
         self._currentlevel = 1
 
     @classmethod
     def start(self):
+        char_name = input("Select Your Name: ")
+        self._player.set_name(char_name)
+
         while (self._player._is_alive):
             self._maps[self._currentlevel - 1].print_map()
             command_text = input("")
