@@ -24,13 +24,13 @@ class Player(Creature):
         leveled = False
         while(not leveled):
             if (stat == "strength"):
-                self._strength = self._strength + 1
+                self._corestrength = self._corestrength + 1
                 leveled = True
             elif (stat == "inteligence"):
-                self._inteligence += 1
+                self._coreinteligence += 1
                 leveled = True
             elif (stat == "dexterity"):
-                self._dexterity += 1
+                self._coredexterity += 1
                 leveled = True
             else:
                 stat = input("Input is wrong. Please try again").lower()
@@ -43,3 +43,6 @@ class Player(Creature):
 
     def set_name(self, name):
         self._name = name
+
+    def is_alive(self):
+        return self._health > 0
