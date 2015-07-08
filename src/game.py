@@ -68,12 +68,7 @@ class Game:
 
         # method for using items
         def _use_item(self, itemname):
-            for item in self._player.inventory:
-                if (item.name() == itemname):
-                    self._player.use_item(item)
-                    self._player.inventory.remove(item)
-                    return
-            print("No such item has been found")
+            self._player.use_item(itemname)
 
         # method for listing inventory
         def _print_inventory(self):
@@ -98,6 +93,6 @@ class Game:
 
         # method for equping items
         def _equip(self, itemname):
-            pass
+            self._player.equip_item(itemname)
 
         # TODO: handle the string evaluation
