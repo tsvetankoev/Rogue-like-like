@@ -51,8 +51,7 @@ class MapGenerator:
 
     def generate(self):
         self._dungeon = [[Tile() for x in range(self._width)]
-                          for y in range(self._height)]
-
+                         for y in range(self._height)]
 
         number_of_rooms = random.randrange(4, 8)
         rooms = []
@@ -63,16 +62,21 @@ class MapGenerator:
         exit_y = None
 
         while len(rooms) <= number_of_rooms:
+            # generate new room
             width = random.randrange(5, 10)
             height = random.randrange(5, 10)
             top_left_X = random.randrange(0, self._width - width)
             top_left_Y = random.randrange(0, self._height - height)
             newroom = Room(width, height, top_left_X, top_left_Y)
+
+            # check if room overlaps with previosly generated rooms
             room_is_new = True
             for room in rooms:
                 if newroom.intersect(room):
                     room_is_new = False
+
             if room_is_new:
+                # add hallways
                 if (len(rooms) > 0):
                     (old_x, old_y) = rooms[len(rooms)-1].random_tile()
                     (new_x, new_y) = newroom.random_tile()
@@ -83,11 +87,16 @@ class MapGenerator:
                     else:
                         self.create_vertical_tunnel(old_y, new_y, old_x)
                         self.create_horizontal_tunnel(old_x, new_x, new_y)
+                # add new room
                 rooms.append(newroom)
                 self.create_room(newroom)
+
+                # add entrance in first room
                 if len(rooms) == 1:
                     (entrance_x, entrance_y) = newroom.random_tile()
                     self._dungeon[entrance_y][entrance_x].add_entrance()
+
+                # add exit in last room
                 elif len(rooms) == number_of_rooms:
                     (exit_x, exit_y) = newroom.random_tile()
                     self._dungeon[exit_y][exit_x].add_exit()
