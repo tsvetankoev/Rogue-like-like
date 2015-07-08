@@ -68,9 +68,3 @@ class Tile:
 
     def has_item(self):
         return self._has_item
-
-    def contents(self):
-        return self._contents
-
-    def remove_contents(self):
-        self._contents = None
