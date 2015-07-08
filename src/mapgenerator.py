@@ -24,8 +24,8 @@ class Room:
                               other_room.bottom_right_X))
 
     def random_tile(self):
-        x = random.randrange(self.top_left_X, self.bottom_right_X + 1)
-        y = random.randrange(self.top_left_Y, self.bottom_right_Y + 1)
+        x = random.randrange(self.top_left_X + 1, self.bottom_right_X)
+        y = random.randrange(self.top_left_Y + 1, self.bottom_right_Y)
         return (x, y)
 
 
