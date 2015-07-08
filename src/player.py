@@ -6,6 +6,7 @@ class Player(Creature):
         self._equipped = {"Sword": None, "Shield": None}
         self._shield = None
         self._health = 10
+        self._mana = 10
         self._experience = 0
         self._level = 1
         self._core_strength = 1
@@ -49,7 +50,23 @@ class Player(Creature):
         self.inventory.append(items)
 
     def use_item(self, itemname):
-        # add logic
+        for item in self._inventory:
+            if item.name() == itemname:
+                (stat, value) = item.use()
+                if (stat == "Health"):
+                    self._hp += value
+                elif stat == "Mana":
+                    self._mana += value
+                elif stat == "Strength":
+                    self._corestrength += value
+                elif stat == "Dexterity":
+                    self._coredexterity += value
+                elif stat == "Inteligence":
+                    self._coreinteligence += value
+                self._inventory.remove(item)
+                self._recalculate_stats()
+                return
+
         print("No such item has been found")
 
     def equip_item(self, itemname):
@@ -61,3 +78,16 @@ class Player(Creature):
             print("No such item has been found")
         else:
             self._equipped[item_to_equip.type()] = item_to_equip
+            self._recalculate_stats()
+
+    def _recalculate_stats(self):
+        self._strength = self._corestrength
+        self._dexterity = self._coredexterity
+        self._inteligence = self._coreinteligence
+        items = list(self._equipped.values())
+        for item in items:
+            self._strength += item.strength
+            self._dexterity += item.dexterity
+            self._inteligence += item.inteligence
+        self._hp = self._dexterity * 10 + self._strength
+        self._mana = self._inteligence * 20
