@@ -2,6 +2,7 @@ import Map
 import Player
 import Battle
 import MonsterGenerator
+import MapGenerator
 
 
 class Game:
@@ -42,15 +43,23 @@ class Game:
                 return
 
             # handle tile contents
-            player_tile = self._map().player_tile()
-            contents = player_tile.get_contents()
+            player_tile = self._maps[self._currentlevel - 1].player_tile()
             if (player_tile.is_entrance()):
-                self._currentlevel -= 1
+                if (self._currentlevel == 1):
+                    print("There is no reason to leave the dungeon")
+                else:
+                    self._currentlevel -= 1
             elif (player_tile.is_exit()):
+                if (len(self._maps) == self._currentlevel):
+                    new_map = Map(self._currentlevel, *(MapGenerator().generate()))
+                    self._maps.append(new_map)
                 self._currentlevel += 1
-            if (player_tile.has_item() and not player_tile.is_visited()):
-                print("Item found: " + contents.name())
-                self._player.add_to_inventory(contents)
+            elif (player_tile.has_item() and not player_tile.is_visited()):
+                items = ItemGenerator.generate()
+                print("Items found: ")
+                for item in items:
+                    print(item.name)
+                self._player.add_to_inventory(items)
             elif (player_tile.has_monster() and not player_tile.is_visited()):
                 monster = MonsterGenerator.generate(self._currentlevel,
                                                     self._player.level())

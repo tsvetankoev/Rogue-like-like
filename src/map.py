@@ -1,5 +1,6 @@
 from mapgenerator import *
 
+
 class Map:
 
     def __init__(self, level, temp_map, startX, startY, endX, endY):
@@ -19,6 +20,9 @@ class Map:
 
     def _get_tile(self, x, y):
         return self._map[y][x]
+
+    def player_tile():
+        self._get_tile(self._playerX, self._playerY)
 
     def clear_current_field(self):
         self.map[self._playerY][self._playerX].contents = None
