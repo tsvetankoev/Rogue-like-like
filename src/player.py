@@ -1,20 +1,18 @@
+from creature import *
+
+
 class Player(Creature):
 
     def __init__(self, name):
-        super(name)
+        Creature.__init__(self, name, 11, 20, 1, 1, 1)
         self.inventory = []
         self._equipped = {"Sword": None, "Shield": None}
         self._shield = None
-        self._health = 10
-        self._mana = 10
         self._experience = 0
         self._level = 1
-        self._core_strength = 1
-        self._core_inteligence = 1
-        self._core_dexterity = 1
-        self._strength = 1
-        self._inteligence = 1
-        self._dexterity = 1
+        self._strength = self._core_strength
+        self._inteligence = self._core_inteligence
+        self._dexterity = self._core_dexterity
 
     def level_up(self):
         self._level = self._level + 1
