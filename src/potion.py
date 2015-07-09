@@ -1,10 +1,10 @@
-import Item
+from item import Item
 
 
 class Potion(Item):
 
     def __init__(self, name, value):
-        super(name)
+        Item.__init__(self, name)
         self._value = value
 
     def use(self):
