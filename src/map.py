@@ -1,4 +1,5 @@
-from outputcontroller import OutputController
+import outputcontroller
+from mapgenerator import MapGenerator
 
 class Map:
 
@@ -23,31 +24,29 @@ class Map:
     def player_tile(self):
         self._get_tile(self._playerX, self._playerY)
 
-    def clear_current_field(self):
-        self.map[self._playerY][self._playerX].contents = None
 
     def _see_neighbours(self):
         for x in range(self._playerX - 1, self._playerX + 2):
             for y in range(self._playerY - 1, self._playerY + 2):
                 if (self._valid_position(x, y)):
-                    self._map[y][x].seen()
+                    self._map[y][x].visible = True
 
     def go_north(self):
         if not(self._valid_position(self._playerX, self._playerY-1)):
-            OutputController.movement_impossible()
+            outputcontroller.movement_impossible()
         elif not(self._map[self._playerY-1][self._playerX].is_passable()):
-            OutputController.movement_impossible()
+            outputcontroller.movement_impossible()
         else:
-            self._map[self._playerY][self._playerX].remove_player()
+            self._map[self._playerY][self._playerX].player = False
             self._playerY = self._playerY - 1
-            self._map[self._playerY][self._playerX].add_player()
+            self._map[self._playerY][self._playerX].player = True
             self._see_neighbours()
 
     def go_south(self):
         if not(self._valid_position(self._playerX, self._playerY+1)):
-            OutputController.movement_impossible()
+            outputcontroller.movement_impossible()
         elif not(self._map[self._playerY+1][self._playerX].is_passable()):
-            OutputController.movement_impossible()
+            outputcontroller.movement_impossible()
         else:
             self._map[self._playerY][self._playerX].remove_player()
             self._playerY = self._playerY + 1
@@ -56,9 +55,9 @@ class Map:
 
     def go_west(self):
         if not(self._valid_position(self._playerX-1, self._playerY)):
-            OutputController.movement_impossible()
+            outputcontroller.movement_impossible()
         elif not(self._map[self._playerY][self._playerX-1].is_passable()):
-            OutputController.movement_impossible()
+            outputcontroller.movement_impossible()
         else:
             self._map[self._playerY][self._playerX].remove_player()
             self._playerX = self._playerX - 1
@@ -67,9 +66,9 @@ class Map:
 
     def go_east(self):
         if not(self._valid_position(self._playerX+1, self._playerY)):
-            OutputController.movement_impossible()
+            outputcontroller.movement_impossible()
         elif not(self._map[self._playerY][self._playerX+1].is_passable()):
-            OutputController.movement_impossible()
+            outputcontroller.movement_impossible()
         else:
             self._map[self._playerY][self._playerX].remove_player()
             self._playerX = self._playerX + 1
@@ -77,7 +76,4 @@ class Map:
             self._see_neighbours()
 
     def draw_map(self):
-        for row in self._map:
-            for cell in row:
-                print(cell.draw(), end="")
-            print()
+        outputcontroller.visualize_dungeon(self._map)
