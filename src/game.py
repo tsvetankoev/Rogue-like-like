@@ -3,6 +3,9 @@ import Player
 import Battle
 import MonsterGenerator
 import MapGenerator
+import ItemGenerator
+from inputcontroller import InputController
+from outputcontroller import OutputController
 
 
 class Game:
@@ -14,12 +17,12 @@ class Game:
 
     @classmethod
     def start(self):
-        char_name = input("Select Your Name: ")
+        char_name = InputController.select_name()
         self._player.set_name(char_name)
 
         while (self._player._is_alive):
             self._maps[self._currentlevel - 1].print_map()
-            command_text = input("")
+            command_text = InputController.select_command()
             command = self._interpate(command_text)
             command(self)
 
@@ -39,14 +42,14 @@ class Game:
             elif (direction == "east"):
                 self._maps[self._currentlevel - 1].go_east()
             else:
-                print("Unknown direction specified")
+                OutputController.unknown_direction()
                 return
 
             # handle tile contents
             player_tile = self._maps[self._currentlevel - 1].player_tile()
             if (player_tile.is_entrance()):
                 if (self._currentlevel == 1):
-                    print("There is no reason to leave the dungeon")
+                    OutputController.leave_dungeon()
                 else:
                     self._currentlevel -= 1
             elif (player_tile.is_exit()):
@@ -56,9 +59,7 @@ class Game:
                 self._currentlevel += 1
             elif (player_tile.has_item() and not player_tile.is_visited()):
                 items = ItemGenerator.generate()
-                print("Items found: ")
-                for item in items:
-                    print(item.name)
+                OutputController.items_found(items)
                 self._player.add_to_inventory(items)
             elif (player_tile.has_monster() and not player_tile.is_visited()):
                 monster = MonsterGenerator.generate(self._currentlevel,
@@ -76,20 +77,7 @@ class Game:
 
         # method for printing help
         def _help(self):
-            print("Here is a list of command you can use:")
-            print("- go north          : Move your character one block north")
-            print("- go south          : Move your character one block south")
-            print("- go west           : Move your character one block west")
-            print("- go east           : Move your character one block east")
-            print("- inventory         : "
-                  "List the items you have in your inventory")
-            print("- equip <item-name> : Equip the item specified. "
-                  "If the item slot is taken "
-                  "the currently equiped item will be replaced.")
-            print("- use <item-name>   : Use the item specified. "
-                  "If you have reached you max stat, "
-                  "the item will be used anyway")
-            print("- help              : List the commands you can use")
+            OutputController.help()
 
         # method for equping items
         def _equip(self, itemname):

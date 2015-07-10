@@ -1,3 +1,5 @@
+from outputcontroller import OutputController
+
 class Map:
 
     def __init__(self, level, temp_map, startX, startY, endX, endY):
@@ -32,9 +34,9 @@ class Map:
 
     def go_north(self):
         if not(self._valid_position(self._playerX, self._playerY-1)):
-            print("Can't go that way.")
+            OutputController.movement_impossible()
         elif not(self._map[self._playerY-1][self._playerX].is_passable()):
-            print("Can't go that way.")
+            OutputController.movement_impossible()
         else:
             self._map[self._playerY][self._playerX].remove_player()
             self._playerY = self._playerY - 1
@@ -43,9 +45,9 @@ class Map:
 
     def go_south(self):
         if not(self._valid_position(self._playerX, self._playerY+1)):
-            print("Can't go that way.")
+            OutputController.movement_impossible()
         elif not(self._map[self._playerY+1][self._playerX].is_passable()):
-            print("Can't go that way.")
+            OutputController.movement_impossible()
         else:
             self._map[self._playerY][self._playerX].remove_player()
             self._playerY = self._playerY + 1
@@ -54,9 +56,9 @@ class Map:
 
     def go_west(self):
         if not(self._valid_position(self._playerX-1, self._playerY)):
-            print("Can't go that way.")
+            OutputController.movement_impossible()
         elif not(self._map[self._playerY][self._playerX-1].is_passable()):
-            print("Can't go that way.")
+            OutputController.movement_impossible()
         else:
             self._map[self._playerY][self._playerX].remove_player()
             self._playerX = self._playerX - 1
@@ -65,9 +67,9 @@ class Map:
 
     def go_east(self):
         if not(self._valid_position(self._playerX+1, self._playerY)):
-            print("Can't go that way.")
+            OutputController.movement_impossible()
         elif not(self._map[self._playerY][self._playerX+1].is_passable()):
-            print("Can't go that way.")
+            OutputController.movement_impossible()
         else:
             self._map[self._playerY][self._playerX].remove_player()
             self._playerX = self._playerX + 1

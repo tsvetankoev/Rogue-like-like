@@ -1,3 +1,6 @@
+from inputcontroller import InputController
+from outputcontroller import OutputController
+
 class Player(Creature):
 
     def __init__(self, name):
@@ -18,8 +21,7 @@ class Player(Creature):
 
     def level_up(self):
         self._level = self._level + 1
-        stat = input("Choose stat to level up (Strength, "
-                     "Inteligence or Dexterity):").lower()
+        stat = InputController.choose_stat()
         leveled = False
         while(not leveled):
             if (stat == "strength"):
@@ -32,7 +34,7 @@ class Player(Creature):
                 self._coredexterity += 1
                 leveled = True
             else:
-                stat = input("Input is wrong. Please try again").lower()
+                stat = InputController.wrong_input()
 
     def health(self):
         return self._health
@@ -67,7 +69,7 @@ class Player(Creature):
                 self._recalculate_stats()
                 return
 
-        print("No such item has been found")
+        OutputController.item_not_found()
 
     def equip_item(self, itemname):
         item_to_equip = None
@@ -75,7 +77,7 @@ class Player(Creature):
             if item.name() == itemname:
                 item_to_equip = item
         if item_to_equip is None:
-            print("No such item has been found")
+            OutputController.item_not_found()
         else:
             self._equipped[item_to_equip.type()] = item_to_equip
             self._recalculate_stats()
