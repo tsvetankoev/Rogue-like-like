@@ -64,6 +64,7 @@ class Game:
             self._maps[self.currentlevel - 1].go_east()
         else:
             outputcontroller.unknown_direction()
+            inputcontroller.press_enter_to_continue()
             return
 
         # handle tile contents
@@ -91,6 +92,7 @@ class Game:
                                            self.currentlevel)
             outputcontroller.items_found(items)
             self._player.add_to_inventory(items)
+            self._maps[self.currentlevel - 1].visit()
             inputcontroller.press_enter_to_continue()
 
         # if tile has a monster, generate monster and start battle
@@ -98,6 +100,7 @@ class Game:
             monster = monstergenerator.generate(self.currentlevel,
                                                 self._player.level)
             battle.start(self._player, monster, self.currentlevel)
+            self._maps[self.currentlevel - 1].visit()
             inputcontroller.press_enter_to_continue()
 
     # method for using items

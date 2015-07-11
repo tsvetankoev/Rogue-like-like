@@ -4,6 +4,7 @@ import inputcontroller
 
 def movement_impossible():
     print("Can't go that way.")
+    inputcontroller.press_enter_to_continue()
 
 
 def not_a_valid_attack():
@@ -22,10 +23,12 @@ def items_found(items):
 
 def unknown_direction():
     print("Unknown direction specified")
+    inputcontroller.press_enter_to_continue()
 
 
 def leave_dungeon():
     print("There is no reason to leave the dungeon")
+    inputcontroller.press_enter_to_continue()
 
 
 def help():
@@ -65,9 +68,9 @@ def visualize_dungeon(dungeon):
                 print("X", end="")
             elif not tile.passable:
                 print("#", end="")
-            elif tile.has_monster:
+            elif tile.has_monster and not tile.is_visited:
                 print("M", end="")
-            elif tile.has_item:
+            elif tile.has_item and not tile.is_visited:
                 print("I", end="")
             else:
                 print(".", end="")

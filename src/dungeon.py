@@ -80,3 +80,6 @@ class Map:
 
     def get_map(self):
         return self._map
+
+    def visit(self):
+        self._map[self._playerY][self._playerX].is_visited = True
