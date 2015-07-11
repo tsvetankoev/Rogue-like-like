@@ -1,75 +1,71 @@
-from inputcontroller import InputController
-from outputcontroller import OutputController
+import inputcontroller
+import outputcontroller
+from creature import Creature
 
 class Player(Creature):
 
     def __init__(self, name):
-        super(name)
+        Creature.__init__(self, name, 11, 20, 1, 1, 1)
         self.inventory = []
         self._equipped = {"Sword": None, "Shield": None}
-        self._shield = None
-        self._health = 10
-        self._mana = 10
-        self._experience = 0
-        self._level = 1
+        self.xp = 0
+        self.level = 1
         self._core_strength = 1
-        self._core_inteligence = 1
+        self._core_intelligence = 1
         self._core_dexterity = 1
-        self._strength = 1
-        self._inteligence = 1
-        self._dexterity = 1
 
-    def level_up(self):
-        self._level = self._level + 1
-        stat = InputController.choose_stat()
-        leveled = False
-        while(not leveled):
+    def attack(self, target):
+        "Attacks target variable based on user input"
+        while (True):
+            attack = inputcontroller.choose_attack()
+            if ("weapon" in attack):
+                return self.weapon_attack(target)
+            elif ("spell" in attack):
+                return self.spell_attack(target)
+            else:
+                outputcontroller.not_a_valid_attack()
+                    
+    def _level_up(self):
+        outputcontroller.level_up()
+        self.xp -= self.xp_for_next_level()
+        self.level = self.level + 1
+        stat = inputcontroller.choose_stat()
+        points = 5
+        while(points > 0):
             if (stat == "strength"):
                 self._corestrength = self._corestrength + 1
-                leveled = True
+                points -= 1
             elif (stat == "inteligence"):
-                self._coreinteligence += 1
-                leveled = True
+                self._coreintelligence += 1
+                points -= 1
             elif (stat == "dexterity"):
                 self._coredexterity += 1
-                leveled = True
+                points -= 1
             else:
-                stat = InputController.wrong_input()
-
-    def health(self):
-        return self._health
-
-    def level(self):
-        return self._level
-
-    def set_name(self, name):
-        self._name = name
-
-    def is_alive(self):
-        return self._health > 0
+                stat = inputcontroller.wrong_input()        
+        self._recalculate_stats()
 
     def add_to_invetory(self, items):
         self.inventory.append(items)
 
     def use_item(self, itemname):
-        for item in self._inventory:
+        for item in self.inventory:
             if item.name() == itemname:
                 (stat, value) = item.use()
                 if (stat == "Health"):
-                    self._hp += value
+                    self.hp += value
                 elif stat == "Mana":
-                    self._mana += value
+                    self.mana += value
                 elif stat == "Strength":
                     self._corestrength += value
                 elif stat == "Dexterity":
                     self._coredexterity += value
-                elif stat == "Inteligence":
-                    self._coreinteligence += value
-                self._inventory.remove(item)
+                elif stat == "Intelligence":
+                    self._coreintelligence += value
+                self.inventory.remove(item)
                 self._recalculate_stats()
                 return
-
-        OutputController.item_not_found()
+        outputcontroller.item_not_found()
 
     def equip_item(self, itemname):
         item_to_equip = None
@@ -77,19 +73,30 @@ class Player(Creature):
             if item.name() == itemname:
                 item_to_equip = item
         if item_to_equip is None:
-            OutputController.item_not_found()
+            outputcontroller.item_not_found()
         else:
             self._equipped[item_to_equip.type()] = item_to_equip
             self._recalculate_stats()
 
     def _recalculate_stats(self):
-        self._strength = self._corestrength
-        self._dexterity = self._coredexterity
-        self._inteligence = self._coreinteligence
+        self.strength = self._corestrength
+        self.dexterity = self._coredexterity
+        self.intelligence = self._coreintelligence
         items = list(self._equipped.values())
         for item in items:
-            self._strength += item.strength
-            self._dexterity += item.dexterity
-            self._inteligence += item.inteligence
-        self._hp = self._dexterity * 10 + self._strength
-        self._mana = self._inteligence * 20
+            self.strength += item.strength
+            self.dexterity += item.dexterity
+            self.intelligence += item.intelligence
+        self.hp = self._dexterity * 10 + self._strength
+        self.mana = self._intelligence * 20
+        
+    def gain_XP(self):
+        base_xp = random.randint(5, 10)
+        multiplier = random.randint(10, 30) / 10
+        self.xp += base_xp + base_xp * multiplier
+        if self.xp_for_next_level() <= self.xp:
+            self._level_up()
+        
+    def xp_for_next_level(self):
+        return self.level * 100
+        

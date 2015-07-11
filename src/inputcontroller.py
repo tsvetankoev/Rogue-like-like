@@ -1,28 +1,21 @@
-class InputController:
+def choose_attack():
+    input_text = "Choose type of attack(Weapon or Spell):"
+    attack = input(input_text).lower()
+    return attack
 
-    @staticmethod
-    def choose_attack():
-        input_text = "Choose type of attack(Weapon or Spell):"
-        attack = input(input_text).lower()
-        return attack
+def select_name():
+    name = input("Select Your Name: ")
+    return name
 
-    @staticmethod
-    def select_name():
-        name = input("Select Your Name: ")
-        return name
+def select_command():
+    command = input("")
+    return command
 
-    @staticmethod
-    def select_command():
-        command = input("")
-        return command
+def choose_stat():
+    stat = input("Choose stat to level up (Strength, "
+                 "Inteligence or Dexterity):").lower()
+    return stat
 
-    @staticmethod
-    def choose_stat():
-        stat = input("Choose stat to level up (Strength, "
-                     "Inteligence or Dexterity):").lower()
-        return stat
-
-    @staticmethod
-    def wrong_input():
-        new_input = input("Input is wrong. Please try again").lower()
-        return new_input
+def wrong_input():
+    new_input = input("Input is wrong. Please try again").lower()
+    return new_input
