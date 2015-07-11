@@ -1,5 +1,5 @@
-# PythonRogue
-PythonRogue is a console roguelike game written in Python 3.4 for the purposes of the Programming with Python course at the Faculty of Mathematics and Informatics of the Sofia Univercity "St. Kliment Ohridski"
+# Rogue-like-like
+Rogue-like-like is a console roguelike game written in Python 3.4 for the purposes of the Programming with Python course at the Faculty of Mathematics and Informatics of the Sofia Univercity "St. Kliment Ohridski"
 
 ##Features
 * The game has infinite maps, each of which is randomly generated.
