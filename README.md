@@ -1,6 +1,9 @@
 # Rogue-like-like
 Rogue-like-like is a console roguelike game written in Python 3.4 for the purposes of the Programming with Python course at the Faculty of Mathematics and Informatics of the Sofia Univercity "St. Kliment Ohridski"
 
+## How to Play the game
+Download the source code and start the game from the play.py file. The game needs to have the console be able to display at least 100 symbols per row.
+
 ##Features
 * The game has infinite maps, each of which is randomly generated.
 * People die if they are killed. There are no saves.
