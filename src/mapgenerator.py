@@ -98,6 +98,7 @@ class MapGenerator:
                 if len(rooms) == 1:
                     (entrance_x, entrance_y) = newroom.random_tile()
                     self._dungeon[entrance_y][entrance_x].entrance = True
+                    self._dungeon[entrance_y][entrance_x].player = True
                     self._dungeon[entrance_y][entrance_x - 1].visible = True
                     self._dungeon[entrance_y][entrance_x + 1].visible = True
                     self._dungeon[entrance_y + 1][entrance_x].visible = True

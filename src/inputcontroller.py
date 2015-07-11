@@ -39,10 +39,10 @@ def command_interpretator(command):
         return command.split(" ", 1)
     if "godmode" == command:
         return command
-    if "go" in command:
+    if command.startswith("go "):
         return command.split(" ", 1)
     return False
 
 
 def press_enter_to_continue():
-    dump_var = input("Press Enter to continue.")
+    input("Press Enter to continue.")

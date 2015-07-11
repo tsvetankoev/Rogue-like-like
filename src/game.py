@@ -46,7 +46,6 @@ class Game:
                 print(command)
                 func = self._game_commands[command]
                 func()
-            inputcontroller.press_enter_to_continue()
             outputcontroller.clear_console()
         outputcontroller.game_over()
 
@@ -92,31 +91,38 @@ class Game:
                                            self.currentlevel)
             outputcontroller.items_found(items)
             self._player.add_to_inventory(items)
+            inputcontroller.press_enter_to_continue()
 
         # if tile has a monster, generate monster and start battle
         elif(player_tile.has_monster and not player_tile.is_visited):
             monster = monstergenerator.generate(self.currentlevel,
                                                 self._player.level)
             battle.start(self._player, monster, self.currentlevel)
+            inputcontroller.press_enter_to_continue()
 
     # method for using items
     def _use_item(self, itemname):
         self._player.use_item(itemname)
+        inputcontroller.press_enter_to_continue()
 
     # method for listing inventory
     def _inventory(self):
         self._player.print_inventory()
+        inputcontroller.press_enter_to_continue()
 
     # method for printing help
     def _help(self):
         outputcontroller.help()
+        inputcontroller.press_enter_to_continue()
 
     # method for equping items
     def _equip(self, itemname):
         self._player.equip_item(itemname)
+        inputcontroller.press_enter_to_continue()
 
     def _stats(self):
         self._player.stats()
+        inputcontroller.press_enter_to_continue()
 
     def _god_mode(self):
         self._player.hp = 999999999
