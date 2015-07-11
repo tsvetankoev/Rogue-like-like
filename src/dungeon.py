@@ -1,6 +1,7 @@
 import outputcontroller
 from mapgenerator import MapGenerator
 
+
 class Map:
 
     def __init__(self, level, temp_map, startX, startY, endX, endY):
@@ -23,7 +24,6 @@ class Map:
 
     def player_tile(self):
         return self._get_tile(self._playerX, self._playerY)
-
 
     def _see_neighbours(self):
         for x in range(self._playerX - 1, self._playerX + 2):
@@ -77,6 +77,6 @@ class Map:
 
     def draw_map(self):
         outputcontroller.visualize_dungeon(self._map)
-        
+
     def get_map(self):
         return self._map

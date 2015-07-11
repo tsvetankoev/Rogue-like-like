@@ -14,15 +14,15 @@ class Creature:
 
     def attack(self, target):
         raise NotImplementedError
-    
+
     def resistance(self, stat):
         return self.dexterity - stat
-    
+
     def weapon_attack(self, target):
         resistance = self.resistance(target.strength)
         damage = self.strength*5 - resistance * 2
         self._attack_helper(target, damage)
-    
+
     def spell_attack(self, target):
         self.mana -= 10
         resistance = self.resistance(target.intelligence)
@@ -36,4 +36,3 @@ class Creature:
             critical = True
         outputcontroller.attacks(self.name, target.name, damage, critical)
         target.hp -= damage
-        

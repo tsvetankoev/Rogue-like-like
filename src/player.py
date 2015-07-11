@@ -1,6 +1,10 @@
 import inputcontroller
 import outputcontroller
+import random
 from creature import Creature
+from potion import Potion
+from equipment import Equipment
+
 
 class Player(Creature):
 
@@ -25,45 +29,45 @@ class Player(Creature):
                 return self.spell_attack(target)
             else:
                 outputcontroller.not_a_valid_attack()
-                    
+
     def _level_up(self):
         outputcontroller.level_up()
         self.xp -= self.xp_for_next_level()
         self.level = self.level + 1
-        stat = inputcontroller.choose_stat()
         points = 5
         while(points > 0):
+            stat = inputcontroller.choose_stat()
             if (stat == "strength"):
-                self._corestrength = self._corestrength + 1
+                self._core_strength += 1
                 points -= 1
             elif (stat == "inteligence"):
-                self._coreintelligence += 1
+                self._core_intelligence += 1
                 points -= 1
             elif (stat == "dexterity"):
-                self._coredexterity += 1
+                self._core_dexterity += 1
                 points -= 1
             else:
-                stat = inputcontroller.wrong_input()        
+                stat = inputcontroller.wrong_input()
         self._recalculate_stats()
 
     def add_to_inventory(self, items):
-        self.inventory.append(items)
+        self.inventory += items
 
     def use_item(self, itemname):
         for item in self.inventory:
-            if item.name() == itemname:
+            if item.name.lower() == itemname.lower() and type(item) is Potion:
                 (stat, value) = item.use()
-                if (stat == "Health"):
+                if (stat == "health"):
                     self.hp += value
                     if (self.hp > self.max_hp):
                         self.hp = self.max_hp
-                elif stat == "Mana":
+                elif stat == "mana":
                     self.mana += value
-                elif stat == "Strength":
+                elif stat == "strength":
                     self._corestrength += value
-                elif stat == "Dexterity":
+                elif stat == "dexterity":
                     self._coredexterity += value
-                elif stat == "Intelligence":
+                elif stat == "intelligence":
                     self._coreintelligence += value
                 self.inventory.remove(item)
                 self._recalculate_stats()
@@ -72,8 +76,8 @@ class Player(Creature):
 
     def equip_item(self, itemname):
         item_to_equip = None
-        for item in self._inventory:
-            if item.name() == itemname:
+        for item in self.inventory:
+            if item.name == itemname.lower() and type(item) is Equipment:
                 item_to_equip = item
         if item_to_equip is None:
             outputcontroller.item_not_found()
@@ -82,29 +86,33 @@ class Player(Creature):
             self._recalculate_stats()
 
     def _recalculate_stats(self):
-        self.strength = self._corestrength
-        self.dexterity = self._coredexterity
-        self.intelligence = self._coreintelligence
+        self.strength = self._core_strength
+        self.dexterity = self._core_dexterity
+        self.intelligence = self._core_intelligence
         items = list(self._equipped.values())
         for item in items:
-            self.strength += item.strength
-            self.dexterity += item.dexterity
-            self.intelligence += item.intelligence
-        self.max_hp = self._dexterity * 10 + self._strength
-        self.mana = self._intelligence * 20
-        
+            if item is not None:
+                self.strength += item.strength
+                self.dexterity += item.dexterity
+                self.intelligence += item.intelligence
+        self.max_hp = self.dexterity * 10 + self.strength
+        self.mana = self.intelligence * 20
+
     def gain_XP(self):
         base_xp = random.randint(5, 10)
         multiplier = random.randint(10, 30) / 10
         self.xp += base_xp + base_xp * multiplier
         if self.xp_for_next_level() <= self.xp:
             self._level_up()
-        
+
     def xp_for_next_level(self):
-        return self.level * 100
-        
+        return self.level * 1
+
     def stats(self):
         outputcontroller.print_stats(self.name, self.hp,
                                      self.max_hp, self.xp,
                                      self.xp_for_next_level(), self.strength,
                                      self.dexterity, self.intelligence)
+
+    def print_inventory(self):
+        outputcontroller.inventory(self.inventory)

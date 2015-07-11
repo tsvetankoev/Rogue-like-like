@@ -5,6 +5,7 @@ import inputcontroller
 def movement_impossible():
     print("Can't go that way.")
 
+
 def not_a_valid_attack():
     print("You didn't choose a valid attack")
 
@@ -48,29 +49,30 @@ def help():
 
 def item_not_found():
     print("No such item has been found")
-    
+
 
 def visualize_dungeon(dungeon):
     clear_console()
     for row in dungeon:
         for tile in row:
             if tile.player:
-                print ("@", end="")
-            #elif not tile.visible:
-            #    print ("_", end="")
+                print("@", end="")
+            elif not tile.visible:
+                print(" ", end="")
             elif tile.entrance:
-                print ("E", end="")
+                print("E", end="")
             elif tile.exit:
-                print ("X", end="")
+                print("X", end="")
             elif not tile.passable:
-                print ("#", end="")
+                print("#", end="")
             elif tile.has_monster:
-                print ("M", end="")
+                print("M", end="")
             elif tile.has_item:
-                print ("I", end="")
+                print("I", end="")
             else:
-                print (".", end="")
+                print(".", end="")
         print()
+
 
 def attacks(attacker, defender, damage, critical):
     if critical:
@@ -80,15 +82,19 @@ def attacks(attacker, defender, damage, critical):
         print("{} critically attacked {} for {} damage.".format(attacker,
                                                                 defender,
                                                                 damage))
-        
+
+
 def level_up():
     print("Congratulations. You leveled up.")
-    
+
+
 def game_over():
     print("Game over.")
 
+
 def clear_console():
-    os.system('cls' if os.name=='nt' else 'clear')
+    os.system('cls' if os.name == 'nt' else 'clear')
+
 
 def print_stats(name, hp, max_hp, xp, xp_for_next_level, strength, dexterity,
                 intelligence):
@@ -98,7 +104,13 @@ def print_stats(name, hp, max_hp, xp, xp_for_next_level, strength, dexterity,
     print("Strength: {}".format(strength))
     print("Dexterity: {}".format(dexterity))
     print("Intelligence: {}".format(intelligence))
-    
+
+
 def unknown_command():
     print("Unknown command.")
     print("Type \"help\" to see a list of commands.")
+
+
+def inventory(items):
+    for item in items:
+        print(item.name)

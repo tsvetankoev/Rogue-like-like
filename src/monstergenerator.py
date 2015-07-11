@@ -1,6 +1,7 @@
 import random
 from monster import Monster
 
+
 def generate(map_level, player_level):
     min_stat = 1 + (map_level + player_level) / 2
     max_stat = 1 + (map_level + player_level * 5) / 2

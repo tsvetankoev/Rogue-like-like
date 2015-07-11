@@ -1,10 +1,7 @@
-from item import Item
-
-
-class Equipment(Item):
+class Equipment:
 
     def __init__(self, name, strength, dexterity, inteligence):
-        Item.__init__(self, name)
+        self.name = name
         self.strength = strength
         self.dexterity = dexterity
         self.inteligence = inteligence
