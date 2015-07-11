@@ -1,86 +1,121 @@
-import Map
-import Player
-import Battle
-import MonsterGenerator
-import MapGenerator
-import ItemGenerator
-from inputcontroller import InputController
-from outputcontroller import OutputController
+from player import Player
+import inputcontroller
+import outputcontroller
+from mapgenerator import MapGenerator
+from itemgenerator import ItemGenerator
+from dungeon import Map
+import monstergenerator
+import battle
 
 
 class Game:
+    
 
     def __init__(self):
         self._maps = []
         self._player = Player("")
-        self._currentlevel = 1
+        self.currentlevel = 1
+        self._ghost_mode = False
+        self._game_commands = {"go": self._move,
+                     "use" : self._use_item,
+                     "equip": self._equip,
+                     "inventory": self._print_inventory,
+                     "stats": self._stats,
+                     "help": self._help}
 
-    @classmethod
     def start(self):
-        char_name = InputController.select_name()
-        self._player.set_name(char_name)
+        char_name = inputcontroller.select_name()
+        self._player.name = char_name
+        new_map = Map(self.currentlevel, *(MapGenerator().generate()))
+        self._maps.append(new_map)
 
-        while (self._player._is_alive):
-            self._maps[self._currentlevel - 1].print_map()
-            command_text = InputController.select_command()
-            command = self._interpate(command_text)
-            command(self)
+        while (self._player.hp > 0):
+            outputcontroller.clear_console()
+            outputcontroller.visualize_dungeon(
+                self._maps[self.currentlevel - 1].get_map())
+            command_text = inputcontroller.select_command()
+            command = inputcontroller.command_interpretator(command_text)
+            
+            if command is False:
+                outputcontroller.unknown_command()
+            if type(command) is list:
+                argument = command[1]
+                command = command[0]
+                self._game_commands[command](argument)
+            else:
+                print(command)
+                func = self._game_commands[command]
+                func()
+            
+            
+            inputcontroller.press_enter_to_continue()
+            outputcontroller.clear_console()
+        outputcontroller.game_over()
 
     def _map(self):
-        return self._maps[self._currentlevel - 1]
+        return self._maps[self.currentlevel - 1]
 
-    def _interprate(self, command_text):
-        # method for map navigation
-        def _move(self, direction):
-            # move in a direction
-            if (direction == "north"):
-                self._maps[self._currentlevel - 1].go_north()
-            elif (direction == "south"):
-                self._maps[self._currentlevel - 1].go_south()
-            elif (direction == "west"):
-                self._maps[self._currentlevel - 1].go_west()
-            elif (direction == "east"):
-                self._maps[self._currentlevel - 1].go_east()
+    def _move(self, direction):
+        # move in a direction
+        if (direction == "north"):
+            self._maps[self.currentlevel - 1].go_north()
+        elif (direction == "south"):
+            self._maps[self.currentlevel - 1].go_south()
+        elif (direction == "west"):
+            self._maps[self.currentlevel - 1].go_west()
+        elif (direction == "east"):
+            self._maps[self.currentlevel - 1].go_east()
+        else:
+            outputcontroller.unknown_direction()
+            return
+        
+        # handle tile contents
+        player_tile = self._maps[self.currentlevel - 1].player_tile()
+        
+        # if player goes to entrance go to previous level
+        # if he is on level one, give coresponing output
+        if (player_tile.entrance):
+            if (self.currentlevel == 1):
+                outputcontroller.leave_dungeon()
             else:
-                OutputController.unknown_direction()
-                return
+                self.currentlevel -= 1
+                
+        # if player go to the exit, go to the next level
+        # generate next map if needed
+        elif (player_tile.exit):
+            if (len(self._maps) == self.currentlevel):
+                new_map = Map(self.currentlevel, *(MapGenerator().generate()))
+                self._maps.append(new_map)
+            self.currentlevel += 1
+            
+        # if tile has items, add them to inventory    
+        elif (player_tile.has_item and not player_tile.is_visited):
+            items = ItemGenerator.generate(self._player.level, self.currentlevel)
+            outputcontroller.items_found(items)
+            self._player.add_to_inventory(items)
+            
+        # if tile has a monster, generate monster and start battle
+        elif (player_tile.has_monster and not player_tile.is_visited):
+            monster = monstergenerator.generate(self.currentlevel,
+                                                self._player.level)
+            battle.start(self._player, monster)
 
-            # handle tile contents
-            player_tile = self._maps[self._currentlevel - 1].player_tile()
-            if (player_tile.is_entrance()):
-                if (self._currentlevel == 1):
-                    OutputController.leave_dungeon()
-                else:
-                    self._currentlevel -= 1
-            elif (player_tile.is_exit()):
-                if (len(self._maps) == self._currentlevel):
-                    new_map = Map(self._currentlevel, *(MapGenerator().generate()))
-                    self._maps.append(new_map)
-                self._currentlevel += 1
-            elif (player_tile.has_item() and not player_tile.is_visited()):
-                items = ItemGenerator.generate()
-                OutputController.items_found(items)
-                self._player.add_to_inventory(items)
-            elif (player_tile.has_monster() and not player_tile.is_visited()):
-                monster = MonsterGenerator.generate(self._currentlevel,
-                                                    self._player.level())
-                battle = Battle(self._player, monster)
-                self._player = battle.start()
+    # method for using items
+    def _use_item(self, itemname):
+        self._player.use_item(itemname)
 
-        # method for using items
-        def _use_item(self, itemname):
-            self._player.use_item(itemname)
+    # method for listing inventory
+    def _print_inventory(self):
+        self._player.print_inventory()
 
-        # method for listing inventory
-        def _print_inventory(self):
-            self._player.print_inventory()
+    # method for printing help
+    def _help(self):
+        outputcontroller.help()
 
-        # method for printing help
-        def _help(self):
-            OutputController.help()
-
-        # method for equping items
-        def _equip(self, itemname):
-            self._player.equip_item(itemname)
-
-        # TODO: handle the string evaluation
+    # method for equping items
+    def _equip(self, itemname):
+        self._player.equip_item(itemname)
+        
+    def _stats(self):
+        self._player.stats()
+        

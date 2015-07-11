@@ -11,4 +11,5 @@ def start(player, monster):
         outputcontroller.battle_won()
         items = ItemGenerator.generate()
         outputcontroller.items_found(items)
+        player.add_to_inventory(items)
         player.gain_XP()

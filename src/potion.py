@@ -8,5 +8,7 @@ class Potion(Item):
         self._value = value
 
     def use(self):
-        potion_name = self._name.replace("Potion of ", "")
-        return (potion_name, self._value)
+        stat = self._name.replace("Potion of ", "")
+        return (stat, self._value)
+    
+    

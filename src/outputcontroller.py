@@ -1,3 +1,7 @@
+import os
+import inputcontroller
+
+
 def movement_impossible():
     print("Can't go that way.")
 
@@ -31,6 +35,8 @@ def help():
     print("- go east       : Move your character one block east")
     print("- inventory     : "
           "List the items you have in your inventory")
+    print("- stats     : "
+          "List the player stats")
     print("- equip <item-name> : Equip the item specified. "
           "If the item slot is taken "
           "the currently equiped item will be replaced.")
@@ -45,24 +51,26 @@ def item_not_found():
     
 
 def visualize_dungeon(dungeon):
+    clear_console()
     for row in dungeon:
         for tile in row:
-            if not tile.visible:
-                print ("", end="")
-            elif tile.player:
-                print ("@")
+            if tile.player:
+                print ("@", end="")
+            #elif not tile.visible:
+            #    print ("_", end="")
             elif tile.entrance:
-                print ("E")
+                print ("E", end="")
             elif tile.exit:
-                print ("X")
+                print ("X", end="")
             elif not tile.passable:
-                print ("#")
+                print ("#", end="")
             elif tile.has_monster:
-                print ("M")
+                print ("M", end="")
             elif tile.has_item:
-                print ("I")
+                print ("I", end="")
             else:
-                print (".")
+                print (".", end="")
+        print()
 
 def attacks(attacker, defender, damage, critical):
     if critical:
@@ -75,3 +83,22 @@ def attacks(attacker, defender, damage, critical):
         
 def level_up():
     print("Congratulations. You leveled up.")
+    
+def game_over():
+    print("Game over.")
+
+def clear_console():
+    os.system('cls' if os.name=='nt' else 'clear')
+
+def print_stats(name, hp, max_hp, xp, xp_for_next_level, strength, dexterity,
+                intelligence):
+    print("Hero {}".format(name))
+    print("Health: {}/{}".format(hp, max_hp))
+    print("XP: {}/{}".format(xp, xp_for_next_level))
+    print("Strength: {}".format(strength))
+    print("Dexterity: {}".format(dexterity))
+    print("Intelligence: {}".format(intelligence))
+    
+def unknown_command():
+    print("Unknown command.")
+    print("Type \"help\" to see a list of commands.")

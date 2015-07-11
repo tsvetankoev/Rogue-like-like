@@ -1,7 +1,5 @@
 class Item:
 
     def __init__(self, name):
-        self._name = name
+        self.name = name
 
-    def name(self):
-        return self._name

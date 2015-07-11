@@ -40,11 +40,11 @@ class MapGenerator:
 
     def _create_horizontal_tunnel(self, start, end, y):
         for x in range(min(start, end), max(start, end) + 1):
-            self._dungeon[y][x].make_passable()
+            self._dungeon[y][x].passable = True
 
     def _create_vertical_tunnel(self, start, end, x):
         for y in range(min(start, end), max(start, end) + 1):
-            self._dungeon[y][x].make_passable()
+            self._dungeon[y][x].passable = True
 
     def _random_tile(self):
         x = random.randrange(0, self._width)
@@ -98,6 +98,11 @@ class MapGenerator:
                 if len(rooms) == 1:
                     (entrance_x, entrance_y) = newroom.random_tile()
                     self._dungeon[entrance_y][entrance_x].entrance = True
+                    self._dungeon[entrance_y][entrance_x - 1].visible = True
+                    self._dungeon[entrance_y][entrance_x + 1].visible = True
+                    self._dungeon[entrance_y +1][entrance_x].visible = True
+                    self._dungeon[entrance_y - 1][entrance_x].visible = True
+                    self._dungeon[entrance_y][entrance_x].visible = True
 
                 # add exit in last room
                 elif len(rooms) == number_of_rooms:
@@ -131,7 +136,7 @@ class MapGenerator:
         while (items > 0):
             x = random.randrange(0, self._width)
             y = random.randrange(0, self._height)
-            if (dungeon[y][x].is_passable()
+            if (dungeon[y][x].passable
                     and not dungeon[y][x].has_monster
                     and not dungeon[y][x].has_item
                     and not dungeon[y][x].entrance

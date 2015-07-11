@@ -9,6 +9,7 @@ class Player(Creature):
         self.inventory = []
         self._equipped = {"Sword": None, "Shield": None}
         self.xp = 0
+        self.max_hp = 11
         self.level = 1
         self._core_strength = 1
         self._core_intelligence = 1
@@ -45,7 +46,7 @@ class Player(Creature):
                 stat = inputcontroller.wrong_input()        
         self._recalculate_stats()
 
-    def add_to_invetory(self, items):
+    def add_to_inventory(self, items):
         self.inventory.append(items)
 
     def use_item(self, itemname):
@@ -54,6 +55,8 @@ class Player(Creature):
                 (stat, value) = item.use()
                 if (stat == "Health"):
                     self.hp += value
+                    if (self.hp > self.max_hp):
+                        self.hp = self.max_hp
                 elif stat == "Mana":
                     self.mana += value
                 elif stat == "Strength":
@@ -87,7 +90,7 @@ class Player(Creature):
             self.strength += item.strength
             self.dexterity += item.dexterity
             self.intelligence += item.intelligence
-        self.hp = self._dexterity * 10 + self._strength
+        self.max_hp = self._dexterity * 10 + self._strength
         self.mana = self._intelligence * 20
         
     def gain_XP(self):
@@ -100,3 +103,8 @@ class Player(Creature):
     def xp_for_next_level(self):
         return self.level * 100
         
+    def stats(self):
+        outputcontroller.print_stats(self.name, self.hp,
+                                     self.max_hp, self.xp,
+                                     self.xp_for_next_level(), self.strength,
+                                     self.dexterity, self.intelligence)

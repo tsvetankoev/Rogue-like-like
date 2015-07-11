@@ -19,3 +19,23 @@ def choose_stat():
 def wrong_input():
     new_input = input("Input is wrong. Please try again").lower()
     return new_input
+
+def command_interpretator(command):
+    command = command.lower()
+    if "go" in command:
+        return command.split(" ", 1)
+    if "help" == command:
+        return command
+    if "stats" == command:
+        return command
+    if "inventory" == command:
+        return command
+    if "use" in command:
+        return command.split(" ", 1)
+    if "equip" in command:
+        return command.split(" ", 1)
+    else:
+        return False
+    
+def press_enter_to_continue():
+    dump_var = input("Press Enter to continue.")
